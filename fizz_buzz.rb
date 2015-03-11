@@ -21,7 +21,7 @@ def get_fb_strings(x, y, num)
     if num % y == 0
       "B"
     else
-      num 
+      num
     end
   end
 end
