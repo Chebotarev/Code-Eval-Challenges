@@ -2,12 +2,12 @@ def get_smallest_multiple(x, n)
 
   counter = 0
 
-  until n >= x
+  while true
     counter += 1
-    n *= counter
+    multiple = n * counter
+    return multiple if multiple >= x
   end
 
-  n
 end
 
 input_lines = File.readlines ARGV[0]
