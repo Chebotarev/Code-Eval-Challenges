@@ -1,8 +1,10 @@
 class QueryBoard
+  MATRIX_SIZE = 256
+
   attr_accessor :matrix
 
   def initialize
-    @matrix = Array.new(256, Array.new(256, 0))
+    @matrix = Array.new(MATRIX_SIZE, Array.new(MATRIX_SIZE, 0))
   end
 
   def SetRow i, x
