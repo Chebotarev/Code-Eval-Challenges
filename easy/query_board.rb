@@ -25,20 +25,20 @@ class QueryBoard
 
   private
 
-    def query orient, n
+    def query orientation, n
       sum = 0
       used = []
-      orient == :row ? not_orient = :col : not_orient = :row
 
       @ops.reverse.each do |op|
+        perp = (orientation == :row) ? op[:col] : op[:row]
 
-        if op.has_key?(orient)
-          if op[orient][0] == n
-            return sum += op[orient][1] * (MATRIX_SIZE - used.length)
+        if parallel = op[orientation]
+          if parallel[0] == n
+            return sum += parallel[1] * (MATRIX_SIZE - used.length)
           end
-        elsif !used.include?(op[not_orient][0])
-          sum += op[not_orient][1]
-          used << op[not_orient][0]
+        elsif !used.include?(perp[0])
+          sum += perp[1]
+          used << perp[0]
         end
       end
 
