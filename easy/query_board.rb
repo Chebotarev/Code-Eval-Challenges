@@ -1,34 +1,48 @@
 class QueryBoard
   MATRIX_SIZE = 256
 
-  attr_accessor :matrix
+  attr_accessor :ops
 
   def initialize
-    @matrix = Array.new(MATRIX_SIZE, Array.new(MATRIX_SIZE, 0))
+    @ops = []
   end
 
   def SetRow i, x
-    @matrix[i].map! { |entry| entry = x }
+    @ops << { row: [i, x] }
   end
 
   def SetCol j, x
-    col_as_row { SetRow j, x }
+    @ops << { col: [j, x] }
   end
 
   def QueryRow i
-    puts @matrix[i].inject(:+)
+    puts query :row, i
   end
 
   def QueryCol j
-    col_as_row { QueryRow j }
+    puts query :col, j
   end
 
   private
 
-    def col_as_row &block
-      @matrix = @matrix.transpose
-      yield
-      @matrix = @matrix.transpose
+    def query orient, n
+      sum = 0
+      used = []
+      orient == :row ? not_orient = :col : not_orient = :row
+
+      @ops.reverse.each do |op|
+
+        if op.has_key?(orient)
+          if op[orient][0] == n
+            return sum += op[orient][1] * (MATRIX_SIZE - used.length)
+          end
+        elsif !used.include?(op[not_orient][0])
+          sum += op[not_orient][1]
+          used << op[not_orient][0]
+        end
+      end
+
+      sum
     end
 end
 
